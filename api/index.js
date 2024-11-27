@@ -9,9 +9,10 @@ const app = express();
 
 /// Middleware
 app.use(cors({
-  origin: ['https://powerball-ten.vercel.app'],
+  origin: ['https://powerball-backend-x.vercel.app/'],
   methods: ['GET', 'POST'],
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Accept']
 }));
 app.use(express.static("public"));
 app.use(express.json());
