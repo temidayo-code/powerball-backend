@@ -44,7 +44,7 @@ transporter.verify(function (error, success) {
 });
 
 // Handle form submission
-app.post("/api/submit-form", upload.none(), async (req, res) => {
+app.post("/send-email", upload.none(), async (req, res) => {
   try {
     console.log("Received form data:", req.body);
 
