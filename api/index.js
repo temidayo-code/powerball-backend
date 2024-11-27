@@ -7,11 +7,16 @@ const app = express();
 
 app.use(cors({
   origin: ['https://powerball-ten.vercel.app'],
-  methods: ['POST'],
+  methods: ['GET', 'POST'],
   credentials: true
 }));
 
 app.use(express.json());
+
+// Test endpoint
+app.get("/", (req, res) => {
+  res.send("Powerball Backend Server is Running on Vercel!");
+});
 
 app.post('/api/submit-form', async (req, res) => {
     try {
