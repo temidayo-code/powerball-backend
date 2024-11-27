@@ -49,16 +49,12 @@ const sendEmail = async (formData) => {
 
         // Send email
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent successfully:', info.messageId);
+        console.log('Email sent:', info.messageId);
         return { success: true, messageId: info.messageId };
 
     } catch (error) {
-        console.error('Detailed email error:', error);
-        return { 
-            success: false, 
-            error: `Email sending failed: ${error.message}`,
-            details: error
-        };
+        console.error('Email error:', error);
+        return { success: false, error: error.message };
     }
 };
 
