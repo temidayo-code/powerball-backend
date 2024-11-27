@@ -28,11 +28,16 @@ const upload = multer();
 
 // Email transporter setup
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
+    pass: process.env.EMAIL_PASS
   },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 // Test email configuration
@@ -49,13 +54,6 @@ app.post("/send-email", upload.none(), async (req, res) => {
   try {
     console.log("Received form data:", req.body);
 
-    // Send success response immediately
-    res.status(200).json({
-      success: true,
-      message: "Your prize claim form has been submitted successfully."
-    });
-
-    // Send email in background
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
@@ -89,9 +87,15 @@ app.post("/send-email", upload.none(), async (req, res) => {
       `
     };
 
-    transporter.sendMail(mailOptions)
-      .then(() => console.log("Email sent successfully"))
-      .catch(error => console.error("Email sending error:", error));
+    // Wait for email to be sent before sending response
+    await transporter.sendMail(mailOptions);
+    console.log("Email sent successfully");
+
+    // Send success response after email is sent
+    res.status(200).json({
+      success: true,
+      message: "Your prize claim form has been submitted successfully."
+    });
 
   } catch (error) {
     console.error("Server Error:", error);
