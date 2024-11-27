@@ -49,7 +49,13 @@ app.post("/send-email", upload.none(), async (req, res) => {
   try {
     console.log("Received form data:", req.body);
 
-    // Email content
+    // Send success response immediately
+    res.status(200).json({
+      success: true,
+      message: "Your prize claim form has been submitted successfully."
+    });
+
+    // Send email in background
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
@@ -83,13 +89,10 @@ app.post("/send-email", upload.none(), async (req, res) => {
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully");
+    transporter.sendMail(mailOptions)
+      .then(() => console.log("Email sent successfully"))
+      .catch(error => console.error("Email sending error:", error));
 
-    res.status(200).json({
-      success: true,
-      message: "Your prize claim form has been submitted successfully."
-    });
   } catch (error) {
     console.error("Server Error:", error);
     res.status(500).json({
