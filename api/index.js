@@ -1,5 +1,6 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
+const multer = require("multer");
 const cors = require("cors");
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
@@ -7,7 +8,11 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 /// Middleware
-app.use(cors());
+app.use(cors({
+  origin: ['https://powerball-ten.vercel.app'],
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.static("public"));
 app.use(express.json());
 
