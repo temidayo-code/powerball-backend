@@ -13,11 +13,12 @@ app.use(cors({
 
 app.use(express.json());
 
-// Test endpoint
-app.get("/", (req, res) => {
-  res.send("Powerball Backend Server is Running on Vercel!");
+// Test route to verify deployment
+app.get('/', (req, res) => {
+  res.send('Powerball Backend Server is Running on Vercel!');
 });
 
+// Form submission route
 app.post('/api/submit-form', async (req, res) => {
     try {
         console.log('Received form submission:', req.body);
