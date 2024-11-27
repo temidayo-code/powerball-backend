@@ -6,10 +6,11 @@ require('dotenv').config();
 const app = express();
 
 app.use(cors({
-  origin: ['https://powerball-ten.vercel.app', 'http://localhost:5504'],
-  methods: ['GET', 'POST'],
+  origin: ['https://powerball-ten.vercel.app'],
+  methods: ['POST'],
   credentials: true
 }));
+
 app.use(express.json());
 
 app.post('/api/submit-form', async (req, res) => {
@@ -34,13 +35,5 @@ app.post('/api/submit-form', async (req, res) => {
         });
     }
 });
-
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-    const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
-}
 
 module.exports = app;

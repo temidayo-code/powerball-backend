@@ -2,11 +2,9 @@ const transporter = require('../config/emailConfig');
 
 const sendEmail = async (formData) => {
     try {
-        // Test the connection first
         await transporter.verify();
         console.log('SMTP connection verified');
 
-        // Create email content
         const emailContent = `
             New Form Submission:
             
@@ -37,9 +35,6 @@ const sendEmail = async (formData) => {
             Submission Time: ${new Date().toLocaleString()}
         `;
 
-        console.log('Attempting to send email...');
-
-        // Email options
         const mailOptions = {
             from: process.env.EMAIL_USER,
             to: process.env.EMAIL_USER,
@@ -47,13 +42,12 @@ const sendEmail = async (formData) => {
             text: emailContent
         };
 
-        // Send email
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.messageId);
+        console.log('Email sent successfully:', info.messageId);
         return { success: true, messageId: info.messageId };
 
     } catch (error) {
-        console.error('Email error:', error);
+        console.error('Email sending failed:', error);
         return { success: false, error: error.message };
     }
 };
